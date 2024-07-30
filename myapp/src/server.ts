@@ -3,16 +3,20 @@
 
 
 
-import express from 'express';             
-                                            
+import express from "express";
 
-const port = 3000;                      
-const app = express();                     
- 
-app.get('/movies', (req, res) => {
-   res.send('Listagem de Filmes');
+import { PrismaClient } from "@prisma/client";      
+                                                      
+
+const port = 3000;
+const app = express();
+const prisma = new PrismaClient();
+
+app.get("/movies", async (req, res) => {              
+   const movies = await prisma.movie.findMany();     
+   res.json(movies);                                  
 });
 
 app.listen(port, () => {
-   console.log(`Servidor em execução em http://localhost:${port}`);   
+   console.log(`Servidor em execução em http://localhost:${port}`);
 });
